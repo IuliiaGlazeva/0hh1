@@ -14,42 +14,67 @@ export const threeOrMoreInARow = (rowOrCol) => {
   return matches
 }
 
+// Returns the number of occurrences of `value` in `rowOrCol`.
+//
+// Example:
+//
+// numberOfValues([0,1,1,1,2,1], 1)
+// => 4
+//
 export const numberOfValues = (rowOrCol, value) => {
   return rowOrCol
-  .filter(val => val === value.length);
+    .filter(v => v === value)
+    .length
 }
 
+// Returns true if rowOrCol1 and rowOrCol2 are fully filled and the same.
+//
+// Example:
+//
+// areIdentical([1,2,1,2], [1,2,1,2])
+// => true
+//
+// areIdentical([1,1,2,2], [1,2,1,2])
+// => false
+//
+// areIdentical([1,2,0,2], [1,2,0,2])
+// => false (not fully filled in, has 0s)
 export const areIdentical = (rowOrCol1, rowOrCol2) => {
-    if(numberOfValues(rowOrCol1, 0) > 0)return false
-    if(numberOfValues(rowOrCol2, 0) > 0) return false
+  if (numberOfValues(rowOrCol1, 0) > 0) return false
+  if (numberOfValues(rowOrCol2, 0) > 0) return false
 
-    return rowOrCol1
+  return rowOrCol1
     .filter((v,i) => v === rowOrCol2[i])
     .length === rowOrCol1.length
 }
 
-
+// Counts the number of empty (0) values on board. Returns
+// true if the number of empty values is 0. False otherwise.
 export const isBoardFull = (board) => {
-    return board
+  return board
     .reduce((sum, row) => sum + numberOfValues(row, 0), 0) === 0
 }
 
-
+// Checks if the value is allowed in a row or column by looking
+// the number of the same values already present in the row or
+// column. Returns a boolean.
 export const valueAllowed = (rowOrCol, value) => {
   return numberOfValues(rowOrCol, value) < (rowOrCol.length / 2)
 }
 
-
+// Returns the board: an array of rows
 export const rows = (board) => {
   return board
 }
 
+// Returns a transposed array of columns on the board
 export const cols = (board) => {
   return board
-  .map((row, y) => row.map((v, x) => board[x][y]))
-
+    .map((row, y) => row.map((v, x) => board[x][y]))
 }
 
+// Returns an array of indices of the columns on the board
+// that are identical.
 export const duplicateRows = (board) => {
   return board.map((row, index) => (
     board
@@ -58,15 +83,19 @@ export const duplicateRows = (board) => {
   )).filter(v => v !== null)
 }
 
-  export const duplicateCols = (board) => {
-    return cols(board).map((col, index) => (
-      cols(board)
-      .filter((col2, index2) => (index !== index2 && areIdentical(col, col2)))
-      .length > 0 ? index : null
-    )).filter(v => v !== null)
-  }
+// Returns an array of indices of the columns on the board
+// that are identical.
+export const duplicateCols = (board) => {
+  return cols(board).map((col, index) => (
+    cols(board)
+    .filter((col2, index2) => (index !== index2 && areIdentical(col, col2)))
+    .length > 0 ? index : null
+  )).filter(v => v !== null)
+}
 
-  export const isPossibleMove = (board, rowIndex, columnIndex, value) => {
+// Checks if a value is a possible move on the board, given the selected
+// position described by the rowIndex and columnIndex. Returns a boolean.
+export const isPossibleMove = (board, rowIndex, columnIndex, value) => {
   const row = rows(board)[rowIndex]
   const col = cols(board)[columnIndex]
 
