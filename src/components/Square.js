@@ -4,15 +4,15 @@ import { connect } from 'react-redux'
 import { move } from '../actions/game'
 import './Square.css'
 
-class Square extends PureComponent {
+export class Square extends PureComponent {
   static propTypes = {
     value: PropTypes.number.isRequired,
     x: PropTypes.number.isRequired,
-   y: PropTypes.number.isRequired,
-   makeMove: PropTypes.func.isRequired,
-   locked: PropTypes.bool,
-   dupe: PropTypes.bool,
-   error: PropTypes.bool
+    y: PropTypes.number.isRequired,
+    makeMove: PropTypes.func.isRequired,
+    locked: PropTypes.bool,
+    dupe: PropTypes.bool,
+    error: PropTypes.bool
   }
 
   handleClick = () => {
@@ -22,16 +22,28 @@ class Square extends PureComponent {
     makeMove(y, x)
   }
 
+  classNames() {
+    const { value, locked, dupe, error } = this.props
+
+    let classnames = ['Square']
+    classnames.push(`fill-${value || 0}`)
+    if (locked) classnames.push('locked')
+    if (dupe) classnames.push('dupe')
+    if (error) classnames.push('wrong')
+
+    return classnames.join(' ')
+  }
+
   render() {
-    const { value, locked } = this.props
     return (
       <div
-      className={`Square fill-${value || 0}${locked ? ' locked': ''}`}
-       onClick={this.handleClick}
+        className={this.classNames()}
+        onClick={this.handleClick}
       />
     )
   }
 }
+
 const mapStateToProps = ({ locked }, { x, y }) => ({
   locked: locked.filter(l => l[0] === y && l[1] === x).length > 0
 })
