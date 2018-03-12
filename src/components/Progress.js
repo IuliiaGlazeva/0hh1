@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { playerProgress } from '../lib/game'
+import './Progress.css'
 
 export class Progress extends PureComponent {
   static propTypes = {
@@ -22,5 +23,6 @@ const mapStateToProps = ({ board, locked }) => {
     progress: Math.floor(playerProgress(board, locked) * 100)
   }
 }
+
 
 export default connect(mapStateToProps)(Progress)

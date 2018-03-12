@@ -67,6 +67,10 @@ const mapStateToProps = ({ board }) => ({
     rows: board.map(threeOrMoreInARow),
     cols: cols(board).map(threeOrMoreInARow)
   }
-})
+})// return an object with the prop names (keys) and prop values
+  // taken from the reduxState (values)
+
+
+  // Then pass it to connect:
 
 export default connect(mapStateToProps)(Board)

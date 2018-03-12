@@ -1,0 +1,35 @@
+form {
+  position: absolute;
+  top: 80px;
+  right: 60px
+}
+
+input {
+    max-width: 70px;
+    border: 1px solid #5C5C5C;
+    border-radius: 1px;
+    font-size: 16px;
+    background-color: white;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 25px 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    text-align: left;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.19);
+}
+
+.login {
+  background-color: #D0021B;
+  border: 1px solid #9E0215;
+  border-radius: 3px;
+  color: #fff;
+  padding: 5px 10px;
+}
+
+.login {
+  background-color: #4A90E2;
+}

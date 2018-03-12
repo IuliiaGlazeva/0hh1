@@ -1,4 +1,12 @@
-export const threeOrMoreInARow = (rowOrCol) => {
+// Returns array with indices of the wrongly placed values.
+//
+// Example:
+//
+// threeOrMoreInARow([0,1,1,1,2,1])
+// => [1,2,3]
+//
+
+module.exports.threeOrMoreInARow = (rowOrCol) => {
   const counts = rowOrCol
     .join('')
     .match(/([1-2]|0)\1*/g) || []
@@ -21,7 +29,7 @@ export const threeOrMoreInARow = (rowOrCol) => {
 // numberOfValues([0,1,1,1,2,1], 1)
 // => 4
 //
-export const numberOfValues = (rowOrCol, value) => {
+module.exports.numberOfValues = (rowOrCol, value) => {
   return rowOrCol
     .filter(v => v === value)
     .length
@@ -39,7 +47,7 @@ export const numberOfValues = (rowOrCol, value) => {
 //
 // areIdentical([1,2,0,2], [1,2,0,2])
 // => false (not fully filled in, has 0s)
-export const areIdentical = (rowOrCol1, rowOrCol2) => {
+module.exports.areIdentical = (rowOrCol1, rowOrCol2) => {
   if (numberOfValues(rowOrCol1, 0) > 0) return false
   if (numberOfValues(rowOrCol2, 0) > 0) return false
 
@@ -50,7 +58,7 @@ export const areIdentical = (rowOrCol1, rowOrCol2) => {
 
 // Counts the number of empty (0) values on board. Returns
 // true if the number of empty values is 0. False otherwise.
-export const isBoardFull = (board) => {
+module.exports.isBoardFull = (board) => {
   return board
     .reduce((sum, row) => sum + numberOfValues(row, 0), 0) === 0
 }
@@ -58,24 +66,24 @@ export const isBoardFull = (board) => {
 // Checks if the value is allowed in a row or column by looking
 // the number of the same values already present in the row or
 // column. Returns a boolean.
-export const valueAllowed = (rowOrCol, value) => {
+module.exports.valueAllowed = (rowOrCol, value) => {
   return numberOfValues(rowOrCol, value) < (rowOrCol.length / 2)
 }
 
 // Returns the board: an array of rows
-export const rows = (board) => {
+module.exports.rows = (board) => {
   return board
 }
 
 // Returns a transposed array of columns on the board
-export const cols = (board) => {
+module.exports.cols = (board) => {
   return board
     .map((row, y) => row.map((v, x) => board[x][y]))
 }
 
 // Returns an array of indices of the columns on the board
 // that are identical.
-export const duplicateRows = (board) => {
+module.exports.duplicateRows = (board) => {
   return board.map((row, index) => (
     board
     .filter((row2, index2) => (index !== index2 && areIdentical(row, row2)))
@@ -85,7 +93,7 @@ export const duplicateRows = (board) => {
 
 // Returns an array of indices of the columns on the board
 // that are identical.
-export const duplicateCols = (board) => {
+module.exports.duplicateCols = (board) => {
   return cols(board).map((col, index) => (
     cols(board)
     .filter((col2, index2) => (index !== index2 && areIdentical(col, col2)))
@@ -95,7 +103,7 @@ export const duplicateCols = (board) => {
 
 // Checks if a value is a possible move on the board, given the selected
 // position described by the rowIndex and columnIndex. Returns a boolean.
-export const isPossibleMove = (board, rowIndex, columnIndex, value) => {
+module.exports.isPossibleMove = (board, rowIndex, columnIndex, value) => {
   const row = rows(board)[rowIndex]
   const col = cols(board)[columnIndex]
 
@@ -122,7 +130,7 @@ export const isPossibleMove = (board, rowIndex, columnIndex, value) => {
   return true
 }
 
-export const boardHasErrors = (board) => {
+module.exports.boardHasErrors = (board) => {
   // any dupe cols/rows?
   if (duplicateCols(board).length > 0) return true
   if (duplicateRows(board).length > 0) return true
@@ -149,14 +157,14 @@ export const boardHasErrors = (board) => {
   return false
 }
 
-export const gameFinished = (board) => {
+module.exports.gameFinished = (board) => {
   return !boardHasErrors(board) &&
     (numSquaresFilled(board) === board.length * board.length)
 }
 
 // Returns the number of squares on the board if isBoardFull(board), but subtracts
 // the wrongly filled squares if correctOnly is true
-export const numSquaresFilled = (board, correctOnly = false) => {
+module.exports.numSquaresFilled = (board, correctOnly = false) => {
   const boardSize = board.length
 
   let filled = board
@@ -176,14 +184,14 @@ export const numSquaresFilled = (board, correctOnly = false) => {
 }
 
 // Get the percentage of squares that have valid values
-export const percentageFilled = (board) => {
+module.exports.percentageFilled = (board) => {
   const boardSize = board.length
   return numSquaresFilled(board, true) / (boardSize * boardSize) * 100
 }
 
 // Return coordinates of filled (non-zero) positions on the board. Each position
 // described as an array of the form [rowIndex, colIndex].
-export const filledPositions = (board) => {
+module.exports.filledPositions = (board) => {
   const pos = board.map((row, rowIndex) => {
     return row
       .map((col, colIndex) => (col === 0 ? null : [rowIndex, colIndex]))
@@ -192,7 +200,7 @@ export const filledPositions = (board) => {
   return [].concat.apply([], pos)
 }
 
-export const removeRandomValuesFromBoard = (board, goalPercentage = 25) => {
+module.exports.removeRandomValuesFromBoard = (board, goalPercentage = 25) => {
   while (percentageFilled(board) > goalPercentage) {
     const positions = filledPositions(board)
     const [row, col] = positions[Math.floor(Math.random() * positions.length)]
@@ -204,7 +212,7 @@ export const removeRandomValuesFromBoard = (board, goalPercentage = 25) => {
 
 // Fill the board with n * n squares and return the solved puzzle if solve = true, or return
 // a playable board with 25% of the squares filled.
-export const fillBoard = (n = 6, solve = false) => {
+module.exports.fillBoard = (n = 6, solve = false) => {
   const boardSize = n * n
   let board = new Array(n).fill(0)
     .map(() => new Array(n).fill(0))
@@ -237,7 +245,7 @@ export const fillBoard = (n = 6, solve = false) => {
   return [board, filledPositions(board)]
 }
 
-export const playerProgress = (board, locked) => {
+module.export.playerProgress = (board, locked) => {
   const totalSquares = board.length * board.length
   const lockedSquares = locked.length
   const filledSquares = numSquaresFilled(board) // see previous exercise for implementation

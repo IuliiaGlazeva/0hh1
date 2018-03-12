@@ -4,6 +4,8 @@
   border-radius: 3px;
   color: #fff;
   padding: 5px 10px;
+  position: absolute;
+  left: 180px;
 }
 
 .CreateGameButton:hover {
